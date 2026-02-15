@@ -1,14 +1,1026 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-    <script type="module" crossorigin src="/assets/index-KtOICzOO.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-8g0avyqo.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Manatune</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F8F7F4;--w:#fff;--ink:#0F0F0F;--2:#5C5C5C;--3:#A8A8A8;--4:#E2E1DD;
+  --g:#1A7A48;--a:#8A5800;--r:#A32020;--b:#1A447A;
+  --f:'DM Sans',system-ui,sans-serif;--m:'DM Mono',monospace;--rad:5px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04);
+}
+body{font-family:var(--f);background:var(--bg);color:var(--ink);height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased;font-size:13px}
+
+/* NAV */
+nav{height:48px;padding:0 24px;display:flex;align-items:center;background:rgba(248,247,244,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(–4);position:relative;z-index:50}
+.logo{font-size:13.5px;font-weight:500;letter-spacing:-.3px;cursor:pointer;margin-right:28px;display:flex;align-items:center;gap:7px;flex-shrink:0;user-select:none}
+.logo-sq{width:20px;height:20px;border:1.5px solid var(–ink);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;transition:background .15s,color .15s}
+.logo:hover .logo-sq{background:var(–ink);color:#fff}
+.tabs{display:flex;flex:1;gap:0}
+.tab{padding:0 14px;height:48px;display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:300;color:var(–3);cursor:pointer;border:none;background:none;font-family:var(–f);border-bottom:1.5px solid transparent;transition:color .15s,border-color .15s;position:relative;top:1px;white-space:nowrap;user-select:none}
+.tab:hover{color:var(–2)}
+.tab.on{color:var(–ink);border-bottom-color:var(–ink);font-weight:400}
+.tbadge{font-size:9px;font-family:var(–m);background:var(–r);color:#fff;padding:1px 5px;border-radius:3px;transition:transform .2s}
+.tdot{width:5px;height:5px;border-radius:50%;background:var(–g);animation:breathe 2.5s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:8px}
+.av{width:26px;height:26px;border-radius:50%;background:var(–ink);color:#fff;font-size:9.5px;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s;flex-shrink:0}
+.av:hover{transform:scale(1.1)}
+
+/* BUTTONS */
+.btn{font-family:var(–f);cursor:pointer;border-radius:var(–rad);font-size:12px;font-weight:400;border:none;transition:all .12s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;user-select:none}
+.bo{padding:5px 12px;background:0;border:1px solid var(–4);color:var(–2)}.bo:hover{border-color:var(–3);color:var(–ink)}
+.bs{padding:5px 13px;background:var(–ink);color:#fff}.bs:hover{background:#2a2a2a;transform:translateY(-1px)}.bs:active{transform:translateY(0)}
+.bsm{padding:4px 10px;font-size:11px}
+.btn:active{transform:scale(.97)}
+
+/* VIEWS */
+.views{height:calc(100vh - 48px);position:relative;overflow:hidden}
+.view{position:absolute;inset:0;padding:32px 36px;overflow-y:auto;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+.view.on{opacity:1;transform:translateY(0);pointer-events:all}
+.view::-webkit-scrollbar{width:3px}.view::-webkit-scrollbar-thumb{background:var(–4);border-radius:2px}
+
+/* PILLS */
+.p{padding:2px 7px;border-radius:3px;font-size:10px;font-weight:400;font-family:var(–m);white-space:nowrap;flex-shrink:0}
+.pg{background:#E7F3ED;color:var(–g)}.pa{background:#FDF2E3;color:var(–a)}
+.pb{background:#E7EEF8;color:var(–b)}.pr{background:#F8E8E8;color:var(–r)}
+.pn{background:var(–bg);color:var(–3);border:1px solid var(–4)}
+
+/* CARD */
+.card{background:var(–w);border:1px solid var(–4);border-radius:var(–rad);overflow:hidden;margin-bottom:12px;box-shadow:var(–shadow)}
+.ch{padding:10px 16px;border-bottom:1px solid var(–4);display:flex;align-items:center;justify-content:space-between}
+.ct{font-size:10px;font-weight:400;text-transform:uppercase;letter-spacing:.9px;color:var(–3)}
+
+/* HOME */
+.home-wrap{max-width:540px}
+.hi{font-size:22px;font-weight:300;letter-spacing:-.5px;margin-bottom:4px}
+.hn{font-size:12.5px;color:var(–3);font-weight:300;margin-bottom:28px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(–4);border:1px solid var(–4);border-radius:var(–rad);overflow:hidden;margin-bottom:24px}
+.stat{background:var(–w);padding:14px 16px;cursor:default;transition:background .12s;position:relative;overflow:hidden}
+.stat:hover{background:#FAFAF8}
+.stat::after{content:’’;position:absolute;bottom:0;left:0;right:0;height:2px;background:var(–ink);transform:scaleX(0);transition:transform .2s ease;transform-origin:left}
+.stat:hover::after{transform:scaleX(1)}
+.sl{font-size:9.5px;color:var(–3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px;font-weight:300}
+.sv{font-size:20px;font-weight:200;letter-spacing:-1px;font-family:var(–m)}
+.sc{font-size:10px;margin-top:2px;font-weight:300}
+.up{color:var(–g)}.wr{color:var(–a)}.dn{color:var(–r)}
+.act-lbl{font-size:9.5px;color:var(–3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.acts{border:1px solid var(–4);border-radius:var(–rad);overflow:hidden;background:var(–w);box-shadow:var(–shadow)}
+.act{padding:11px 16px;border-bottom:1px solid var(–4);display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .1s,padding-left .15s}
+.act:last-child{border-bottom:none}
+.act:hover{background:#FAFAF8;padding-left:20px}
+.act-ic{width:26px;height:26px;border-radius:var(–rad);border:1px solid var(–4);display:flex;align-items:center;justify-content:center;font-size:10.5px;flex-shrink:0;color:var(–3);transition:border-color .15s,color .15s,background .15s}
+.act:hover .act-ic{border-color:var(–ink);color:var(–ink);background:var(–bg)}
+.act-nm{font-size:12.5px;font-weight:400;flex:1}
+.act-sub{font-size:11px;color:var(–3);font-weight:300}
+.act-arr{color:var(–4);font-size:13px;margin-left:auto;transition:transform .15s,color .15s}
+.act:hover .act-arr{transform:translateX(3px);color:var(–ink)}
+
+/* PORTFOLIO */
+.port-wrap{max-width:680px}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
+.pt{font-size:19px;font-weight:300;letter-spacing:-.4px}
+.ps{font-size:12px;color:var(–3);font-weight:300;margin-top:2px}
+.row{padding:10px 16px;border-bottom:1px solid var(–4);display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .08s,padding-left .15s}
+.row:last-child{border-bottom:none}
+.row:hover{background:#FAFAF8;padding-left:20px}
+.rn{font-size:12.5px;font-weight:400;flex:1;min-width:0}
+.rs{font-size:10.5px;color:var(–3);font-weight:300;margin-top:1.5px}
+.drow{padding:10px 16px;border-bottom:1px solid var(–4);display:flex;align-items:center;gap:12px}
+.drow:last-child{border-bottom:none}
+.dn-l{font-size:12px;font-weight:300;flex:1}
+.d-tr{width:56px;height:2.5px;background:var(–4);border-radius:2px;overflow:hidden;flex-shrink:0}
+.d-fi{height:100%;border-radius:2px;transition:width .8s ease}
+.d-d{font-size:10px;font-family:var(–m);color:var(–3);width:24px;text-align:right}
+.arow{padding:10px 16px;border-bottom:1px solid var(–4);display:flex;gap:9px;align-items:flex-start}
+.arow:last-child{border-bottom:none}
+.a-dot{width:4px;height:4px;border-radius:50%;background:var(–4);margin-top:6px;flex-shrink:0}
+.a-t{font-size:11.5px;color:var(–2);font-weight:300;flex:1;line-height:1.5}
+.a-t b{color:var(–ink);font-weight:500}
+.a-ts{font-size:10px;font-family:var(–m);color:var(–3);white-space:nowrap}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.prow{padding:9px 16px;border-bottom:1px solid var(–4)}
+.prow:last-child{border-bottom:none}
+.ptr{display:flex;justify-content:space-between;margin-bottom:4px}
+.pl{font-size:11.5px;font-weight:300;color:var(–2)}
+.pv{font-size:10.5px;font-family:var(–m);color:var(–ink)}
+.pbar{height:2.5px;background:var(–bg);border-radius:2px;overflow:hidden}
+.pfi{height:100%;background:var(–ink);border-radius:2px;transition:width 1s ease}
+
+/* MARKETPLACE */
+.mkt-wrap{max-width:680px}
+.search-bar{display:flex;align-items:center;gap:8px;background:var(–w);border:1px solid var(–4);border-radius:var(–rad);padding:7px 12px;margin-bottom:12px;box-shadow:var(–shadow);transition:border-color .15s}
+.search-bar:focus-within{border-color:var(–3)}
+.search-bar input{flex:1;border:none;background:none;font-family:var(–f);font-size:12.5px;color:var(–ink);outline:none}
+.search-bar input::placeholder{color:var(–3)}
+.search-ic{color:var(–3);font-size:12px;flex-shrink:0}
+.filter-row{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}
+.fbtn{padding:4px 10px;border-radius:20px;font-size:11px;cursor:pointer;border:1px solid var(–4);background:var(–w);color:var(–3);font-family:var(–f);transition:all .12s;user-select:none}
+.fbtn:hover{border-color:var(–3);color:var(–2)}
+.fbtn.on{background:var(–ink);color:#fff;border-color:var(–ink)}
+.pros{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.pro{background:var(–w);border:1px solid var(–4);border-radius:var(–rad);padding:14px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;box-shadow:var(–shadow)}
+.pro:hover{border-color:var(–3);box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+.pro.hidden{display:none}
+.pro-top{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.pro-av{width:30px;height:30px;border-radius:50%;background:var(–ink);color:#fff;font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s}
+.pro:hover .pro-av{transform:scale(1.08)}
+.pro-nm{font-size:12.5px;font-weight:400}
+.pro-sp{font-size:10.5px;color:var(–3);font-weight:300}
+.pro-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.ptag{padding:2px 6px;border-radius:3px;font-size:9.5px;font-family:var(–m);background:var(–bg);color:var(–2);border:1px solid var(–4)}
+.pro-foot{display:flex;justify-content:space-between;align-items:center}
+.pro-rt{font-size:12px;font-weight:400;font-family:var(–m)}
+.pro-st{font-size:9.5px;color:var(–3)}
+
+/* VAULT */
+.vault-wrap{max-width:560px}
+.idea-row{padding:12px 16px;border-bottom:1px solid var(–4);display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .08s,padding-left .15s;position:relative}
+.idea-row:last-child{border-bottom:none}
+.idea-row:hover{background:#FAFAF8;padding-left:20px}
+.idea-row.new-item{animation:slideIn .35s ease both}
+@keyframes slideIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+.idea-icon{width:26px;height:26px;border-radius:var(–rad);background:var(–bg);border:1px solid var(–4);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:border-color .15s}
+.idea-row:hover .idea-icon{border-color:var(–ink)}
+.idea-nm{font-size:12.5px;font-weight:400;flex:1;min-width:0}
+.hash-tag{font-size:9.5px;font-family:var(–m);color:var(–3);margin-top:1.5px}
+.idea-del{opacity:0;color:var(–3);font-size:12px;cursor:pointer;margin-left:4px;transition:opacity .12s,color .12s;flex-shrink:0;padding:2px 4px;border-radius:3px}
+.idea-row:hover .idea-del{opacity:1}
+.idea-del:hover{color:var(–r);background:var(–bg)}
+
+/* TOOLS */
+.tools-wrap{max-width:600px}
+.trow{padding:12px 16px;border-bottom:1px solid var(–4);display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .08s,padding-left .15s}
+.trow:last-child{border-bottom:none}
+.trow:hover{background:#FAFAF8;padding-left:20px}
+.t-ic{width:28px;height:28px;border-radius:var(–rad);border:1px solid var(–4);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:border-color .15s,background .15s}
+.trow:hover .t-ic{border-color:var(–ink);background:var(–bg)}
+.t-nm{font-size:12.5px;font-weight:400}
+.t-ds{font-size:11px;color:var(–3);font-weight:300}
+.t-bk{margin-left:auto;flex-shrink:0;font-size:9px;font-family:var(–m);padding:2px 5px;border-radius:3px;background:var(–ink);color:#fff;text-transform:uppercase;letter-spacing:.3px}
+.t-arr{color:var(–4);margin-left:auto;transition:transform .15s,color .15s;font-size:12px}
+.trow:hover .t-arr{transform:translateX(3px);color:var(–ink)}
+.dbox{margin:0 16px 14px;padding:12px 14px;background:var(–bg);border:1px solid var(–4);border-radius:var(–rad)}
+.dbox-l{font-size:9px;font-family:var(–m);color:var(–3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
+.dbox-t{font-size:11.5px;color:var(–2);line-height:1.7;font-weight:300}
+.dbox-t b{color:var(–ink);font-weight:500}
+.dbox-a{margin-top:8px;display:flex;gap:5px}
+.progress-ring{transform:rotate(-90deg)}
+.risk-bar{height:3px;background:var(–4);border-radius:2px;overflow:hidden;margin-top:5px}
+.risk-fill{height:100%;border-radius:2px;background:var(–g);width:0;transition:width 1.2s ease}
+
+/* AI TYPING */
+.typing-cursor{display:inline-block;width:1px;height:12px;background:var(–ink);margin-left:1px;animation:blink .7s step-end infinite;vertical-align:text-bottom}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.ai-generating .dbox-t{color:var(–ink)}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+.toast{background:var(–ink);color:#fff;padding:9px 16px;border-radius:var(–rad);font-size:12px;font-weight:300;box-shadow:0 4px 16px rgba(0,0,0,.18);animation:toastIn .25s ease both;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.toast.out{animation:toastOut .25s ease both}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(8px)}}
+.toast-icon{font-size:13px}
+
+/* MODAL */
+.mbg{position:fixed;inset:0;z-index:500;background:rgba(248,247,244,.88);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .18s}
+.mbg.on{opacity:1;pointer-events:all}
+.mbox{width:min(420px,92vw);background:var(–w);border:1px solid var(–4);border-radius:7px;box-shadow:0 8px 32px rgba(0,0,0,.1);transform:translateY(6px) scale(.98);transition:transform .18s,opacity .18s}
+.mbg.on .mbox{transform:translateY(0) scale(1)}
+.mt{padding:15px 18px 12px;border-bottom:1px solid var(–4);display:flex;align-items:flex-start;justify-content:space-between}
+.mt-ti{font-size:14px;font-weight:400;letter-spacing:-.2px}
+.mt-su{font-size:11px;color:var(–3);font-weight:300;margin-top:2px}
+.mx{font-size:15px;color:var(–3);cursor:pointer;background:none;border:none;padding:2px;line-height:1;transition:color .12s}.mx:hover{color:var(–ink)}
+.mb{padding:14px 18px;display:flex;flex-direction:column;gap:10px}
+.mf{padding:11px 18px;border-top:1px solid var(–4);display:flex;justify-content:flex-end;gap:7px}
+.fi{display:flex;flex-direction:column;gap:4px}
+.fi label{font-size:9.5px;color:var(–3);text-transform:uppercase;letter-spacing:.7px}
+.fi input,.fi textarea,.fi select{background:var(–bg);border:1px solid var(–4);border-radius:var(–rad);padding:7px 10px;font-family:var(–f);font-size:12.5px;color:var(–ink);outline:none;transition:border-color .12s,box-shadow .12s;resize:none;width:100%}
+.fi input:focus,.fi textarea:focus,.fi select:focus{border-color:var(–ink);box-shadow:0 0 0 2px rgba(15,15,15,.06)}
+.fi textarea{min-height:60px}
+.fi select option{background:#fff}
+.char-count{font-size:9.5px;color:var(–3);text-align:right;margin-top:2px;font-family:var(–m)}
+
+/* COUNTER ANIMATION */
+@keyframes countUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.count-anim{animation:countUp .4s ease both}
+
+/* SKELETON */
+.skel{background:linear-gradient(90deg,var(–4) 25%,#EDECE9 50%,var(–4) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:3px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* STATUS TOGGLE */
+.status-cycle{cursor:pointer;transition:opacity .12s}
+.status-cycle:hover{opacity:.75}
+
+/* FILING EXPAND */
+.filing-detail{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;background:#FAFAF8;border-top:0 solid var(–4)}
+.filing-detail.open{max-height:120px;border-top-width:1px;padding:10px 16px}
+.filing-detail-content{font-size:11.5px;color:var(–2);font-weight:300;line-height:1.6}
+
+/* PROGRESS COUNTER */
+.num-animate{transition:all .3s ease}
+
+/* ── MOBILE ─────────────────────────────────────── */
+@media(max-width:640px){
+.tabs{display:none}
+.nav-r .btn{display:none}
+nav{padding:0 16px}
+.logo{margin-right:0}
+.views{height:calc(100vh - 48px - 60px)}
+.view{padding:20px 16px 32px}
+.stats{grid-template-columns:1fr 1fr}
+.g2{grid-template-columns:1fr}
+.pros{grid-template-columns:1fr 1fr}
+.home-wrap,.port-wrap,.mkt-wrap,.vault-wrap,.tools-wrap{max-width:100%}
+.act:hover{padding-left:16px}
+.row:hover{padding-left:16px}
+.idea-row:hover{padding-left:16px}
+.trow:hover{padding-left:16px}
+.idea-del{opacity:1;color:var(–4)}
+.ph{flex-direction:column;gap:10px}
+.ph .btn{align-self:flex-start}
+.mbg{align-items:flex-end}
+.mbox{width:100%;border-radius:16px 16px 0 0;transform:translateY(100%);max-height:88vh;overflow-y:auto;display:flex;flex-direction:column}
+.mbg.on .mbox{transform:translateY(0)}
+.toast-wrap{bottom:76px}
+.filter-row{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.hi{font-size:20px}
+.pt{font-size:17px}
+.stat{cursor:pointer;-webkit-tap-highlight-color:transparent}
+}
+@media(max-width:380px){
+.pros{grid-template-columns:1fr}
+}
+
+/* ── BOTTOM TAB BAR ─────────────────────────────── */
+.bottom-nav{
+display:none;
+position:fixed;bottom:0;left:0;right:0;z-index:100;
+background:rgba(248,247,244,.97);
+backdrop-filter:blur(14px);
+border-top:1px solid var(–4);
+height:calc(60px + env(safe-area-inset-bottom));
+padding-bottom:env(safe-area-inset-bottom);
+}
+.bottom-nav-inner{height:60px;display:flex;align-items:stretch;padding:0 4px}
+.bnav-item{
+flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+gap:3px;cursor:pointer;border:none;background:none;font-family:var(–f);
+border-radius:8px;padding:6px 2px;position:relative;
+-webkit-tap-highlight-color:transparent;transition:background .1s;
+}
+.bnav-item:active{background:var(–4)}
+.bnav-ic{font-size:18px;color:var(–3);line-height:1;transition:color .15s,transform .15s}
+.bnav-lb{font-size:9px;color:var(–3);font-weight:300;transition:color .15s;letter-spacing:.1px;white-space:nowrap}
+.bnav-item.on .bnav-ic{color:var(–ink);transform:scale(1.1)}
+.bnav-item.on .bnav-lb{color:var(–ink);font-weight:500}
+.bnav-badge{
+position:absolute;top:5px;right:calc(50% - 16px);
+min-width:14px;height:14px;border-radius:7px;
+background:var(–r);color:#fff;font-size:8px;font-family:var(–m);
+display:flex;align-items:center;justify-content:center;padding:0 3px;
+}
+.bnav-dot{
+position:absolute;top:7px;right:calc(50% - 14px);
+width:5px;height:5px;border-radius:50%;
+background:var(–g);animation:breathe 2.5s ease-in-out infinite;
+}
+
+/* ── FAB ─────────────────────────────────────────── */
+.fab{
+display:none;position:fixed;bottom:76px;right:16px;
+width:46px;height:46px;border-radius:50%;
+background:var(–ink);color:#fff;font-size:22px;font-weight:200;
+align-items:center;justify-content:center;
+cursor:pointer;z-index:99;border:none;font-family:var(–f);
+box-shadow:0 4px 18px rgba(0,0,0,.22);
+transition:transform .15s,box-shadow .15s;
+-webkit-tap-highlight-color:transparent;
+line-height:1;
+}
+.fab:active{transform:scale(.9)}
+
+@media(max-width:640px){
+.bottom-nav{display:block}
+.fab{display:flex}
+/* Prevent iOS auto-zoom on input focus */
+.fi input,.fi textarea,.fi select{font-size:16px}
+/* Modal drag handle */
+.mbox::before{
+content:’’;display:block;width:36px;height:4px;
+background:var(–4);border-radius:2px;
+margin:10px auto 0;flex-shrink:0;
+}
+}
+</style>
+
+</head>
+<body>
+
+<nav>
+  <div class="logo" onclick="go('home')">
+    <div class="logo-sq">M</div>
+    Manatune
+  </div>
+  <div class="tabs">
+    <button class="tab on" id="t-home" onclick="go('home',this)">Home</button>
+    <button class="tab" id="t-portfolio" onclick="go('portfolio',this)">Portfolio <span class="tbadge" id="alert-badge">2!</span></button>
+    <button class="tab" id="t-marketplace" onclick="go('marketplace',this)">Marketplace</button>
+    <button class="tab" id="t-vault" onclick="go('vault',this)">Idea Vault</button>
+    <button class="tab" id="t-tools" onclick="go('tools',this)">AI Tools <span class="tdot"></span></button>
+  </div>
+  <div class="nav-r">
+    <button class="btn bo bsm" onclick="M('new-filing')">+ New filing</button>
+    <button class="btn bs bsm" onclick="M('new-idea')">Capture idea</button>
+    <div class="av">JA</div>
+  </div>
+</nav>
+
+<div class="views">
+
+<!-- HOME -->
+
+<div class="view on" id="v-home">
+  <div class="home-wrap">
+    <div class="hi">Good morning, Jordan.</div>
+    <div class="hn" id="home-note">2 items need your attention — <span style="color:var(--r);cursor:pointer;text-decoration:underline;text-decoration-style:dotted" onclick="M('deadlines')">view deadlines ›</span></div>
+    <div class="stats">
+      <div class="stat" onclick="go('portfolio')">
+        <div class="sl">Filings</div>
+        <div class="sv" id="stat-filings">24</div>
+        <div class="sc up" id="stat-filings-sub">+4 this qtr</div>
+      </div>
+      <div class="stat" onclick="M('deadlines')">
+        <div class="sl">Pending</div>
+        <div class="sv" id="stat-pending">7</div>
+        <div class="sc wr">2 urgent</div>
+      </div>
+      <div class="stat" onclick="go('vault')">
+        <div class="sl">Protected</div>
+        <div class="sv" id="stat-protected">18</div>
+        <div class="sc up" id="stat-protected-sub">+3 new</div>
+      </div>
+      <div class="stat">
+        <div class="sl">Value est.</div>
+        <div class="sv">$2.4M</div>
+        <div class="sc up">+14%</div>
+      </div>
+    </div>
+    <div class="act-lbl">Quick actions</div>
+    <div class="acts">
+      <div class="act" onclick="M('patent')">
+        <div class="act-ic">⬡</div>
+        <div><div class="act-nm">File a patent</div><div class="act-sub">Utility, design, or PCT</div></div>
+        <span class="act-arr">›</span>
+      </div>
+      <div class="act" onclick="M('trademark')">
+        <div class="act-ic">™</div>
+        <div><div class="act-nm">Register a trademark</div><div class="act-sub">Brand, logo, or slogan</div></div>
+        <span class="act-arr">›</span>
+      </div>
+      <div class="act" onclick="M('new-idea')">
+        <div class="act-ic">◈</div>
+        <div><div class="act-nm">Capture an idea</div><div class="act-sub">Timestamp to vault</div></div>
+        <span class="act-arr">›</span>
+      </div>
+      <div class="act" onclick="go('tools')">
+        <div class="act-ic">✦</div>
+        <div><div class="act-nm">Draft with AI</div><div class="act-sub">Patent claims, prior art search</div></div>
+        <span class="p pg" style="font-size:9px;padding:1px 6px">Live</span>
+        <span class="act-arr">›</span>
+      </div>
+      <div class="act" onclick="go('marketplace')">
+        <div class="act-ic">◌</div>
+        <div><div class="act-nm">Find an expert</div><div class="act-sub">Verified attorneys & agents</div></div>
+        <span class="act-arr">›</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PORTFOLIO -->
+
+<div class="view" id="v-portfolio">
+  <div class="port-wrap">
+    <div class="ph">
+      <div><div class="pt">Portfolio</div><div class="ps" id="port-sub">24 filings · 18 active</div></div>
+      <button class="btn bs bsm" onclick="M('new-filing')">+ Add filing</button>
+    </div>
+    <div class="g2" style="margin-bottom:12px">
+      <div class="card">
+        <div class="ch"><span class="ct">Active filings</span><span style="font-size:10.5px;color:var(--3)">Click to expand</span></div>
+        <div id="filing-list">
+          <div class="row" onclick="expandFiling(this,'SmartSync Algorithm v2','USPTO · Patent · Ref 18/445,331','Examination ongoing. Response to office action due in 8 days. Claim scope under review for prior art conflicts.')">
+            <div style="flex:1;min-width:0"><div class="rn">SmartSync Algorithm v2</div><div class="rs">USPTO · Patent</div></div>
+            <span class="p pr status-cycle" onclick="event.stopPropagation();cycleStatus(this)">8d</span>
+            <span class="p pg status-cycle" onclick="event.stopPropagation();cycleStatus(this)">Active</span>
+          </div>
+          <div class="filing-detail" id="detail-0"></div>
+          <div class="row" onclick="expandFiling(this,'Manatune™ Brand Mark','USPTO · Trademark · IC 42','Office action received Jan 2025. Response deadline in 21 days. Examiner raised likelihood of confusion with existing mark.')">
+            <div style="flex:1;min-width:0"><div class="rn">Manatune™ Brand Mark</div><div class="rs">USPTO · Trademark</div></div>
+            <span class="p pa status-cycle" onclick="event.stopPropagation();cycleStatus(this)">21d</span>
+            <span class="p pa status-cycle" onclick="event.stopPropagation();cycleStatus(this)">Pending</span>
+          </div>
+          <div class="filing-detail" id="detail-1"></div>
+          <div class="row" onclick="expandFiling(this,'XR Interface Design System','US Copyright Office','Registration submitted Feb 2025. Standard processing 8–10 weeks. No issues flagged.')">
+            <div style="flex:1;min-width:0"><div class="rn">XR Interface Design System</div><div class="rs">Copyright</div></div>
+            <span class="p pn">—</span>
+            <span class="p pb status-cycle" onclick="event.stopPropagation();cycleStatus(this)">Review</span>
+          </div>
+          <div class="filing-detail" id="detail-2"></div>
+          <div class="row" style="opacity:.55" onclick="expandFiling(this,'Neural Mesh Compression','PCT Application','Claims drafted by AI. Requires attorney review before filing. Target PCT filing date: April 2025.')">
+            <div style="flex:1;min-width:0"><div class="rn">Neural Mesh Compression</div><div class="rs">Patent PCT · Draft</div></div>
+            <span class="p pn">—</span>
+            <span class="p pn status-cycle" onclick="event.stopPropagation();cycleStatus(this)">Draft</span>
+          </div>
+          <div class="filing-detail" id="detail-3"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="ch"><span class="ct">Deadlines</span><span class="p pr" id="urgent-count">2 urgent</span></div>
+          <div class="drow"><div class="dn-l">SmartSync renewal</div><div class="d-tr"><div class="d-fi" style="width:0;background:var(--r)" data-w="90"></div></div><div class="d-d dn">8d</div></div>
+          <div class="drow"><div class="dn-l">Manatune™ response</div><div class="d-tr"><div class="d-fi" style="width:0;background:var(--a)" data-w="58"></div></div><div class="d-d wr">21d</div></div>
+          <div class="drow"><div class="dn-l">PCT national phase</div><div class="d-tr"><div class="d-fi" style="width:0;background:var(--ink)" data-w="32"></div></div><div class="d-d">44d</div></div>
+          <div class="drow"><div class="dn-l">Design copyright</div><div class="d-tr"><div class="d-fi" style="width:0;background:var(--3)" data-w="15"></div></div><div class="d-d">62d</div></div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="ct">Portfolio health</span></div>
+          <div class="prow"><div class="ptr"><span class="pl">Filing completion</span><span class="pv">78%</span></div><div class="pbar"><div class="pfi" style="width:0" data-w="78"></div></div></div>
+          <div class="prow"><div class="ptr"><span class="pl">Renewal health</span><span class="pv">91%</span></div><div class="pbar"><div class="pfi" style="width:0" data-w="91"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="ct">Recent activity</span></div>
+      <div id="activity-feed">
+        <div class="arow"><div class="a-dot" style="background:var(--g)"></div><div class="a-t"><b>USPTO confirmed</b> SmartSync receipt</div><div class="a-ts">2h ago</div></div>
+        <div class="arow"><div class="a-dot"></div><div class="a-t">AI draft for <b>Neural Mesh</b> ready to review</div><div class="a-ts">5h ago</div></div>
+        <div class="arow"><div class="a-dot" style="background:var(--a)"></div><div class="a-t"><b>Sarah Chen</b> reviewed trademark brief</div><div class="a-ts">1d ago</div></div>
+        <div class="arow"><div class="a-dot"></div><div class="a-t">Idea timestamped: <b>Quantum UI Model</b></div><div class="a-ts">2d ago</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MARKETPLACE -->
+
+<div class="view" id="v-marketplace">
+  <div class="mkt-wrap">
+    <div class="ph" style="margin-bottom:12px">
+      <div><div class="pt">Marketplace</div><div class="ps">Verified IP professionals</div></div>
+    </div>
+    <div class="search-bar">
+      <span class="search-ic">⌕</span>
+      <input id="pro-search" placeholder="Search by name, specialty, or tag…" oninput="filterPros()"/>
+      <span id="search-clear" style="color:var(--3);cursor:pointer;font-size:11px;display:none" onclick="clearSearch()">✕</span>
+    </div>
+    <div class="filter-row">
+      <button class="fbtn on" onclick="setFilter('all',this)">All</button>
+      <button class="fbtn" onclick="setFilter('patent',this)">Patents</button>
+      <button class="fbtn" onclick="setFilter('trademark',this)">Trademarks</button>
+      <button class="fbtn" onclick="setFilter('copyright',this)">Copyrights</button>
+      <button class="fbtn" onclick="setFilter('strategy',this)">Strategy</button>
+    </div>
+    <div class="pros" id="pro-grid">
+      <div class="pro" data-tags="patent software ai ml pct" onclick="M('hire-pro','Sarah Chen')">
+        <div class="pro-top"><div class="pro-av">SC</div><div><div class="pro-nm">Sarah Chen</div><div class="pro-sp">Patent Attorney · USPTO</div></div><span class="p pg" style="margin-left:auto">Open</span></div>
+        <div class="pro-tags"><span class="ptag">Software IP</span><span class="ptag">AI/ML</span><span class="ptag">PCT</span></div>
+        <div class="pro-foot"><div class="pro-st">★★★★★ 4.9 · 87 reviews</div><div class="pro-rt">$420/hr</div></div>
+      </div>
+      <div class="pro" data-tags="trademark brand euipo" onclick="M('hire-pro','Marcus Reid')">
+        <div class="pro-top"><div class="pro-av" style="background:#3a3a3a">MR</div><div><div class="pro-nm">Marcus Reid</div><div class="pro-sp">Trademark Specialist</div></div><span class="p pg" style="margin-left:auto">Open</span></div>
+        <div class="pro-tags"><span class="ptag">Trademarks</span><span class="ptag">Brand IP</span><span class="ptag">EUIPO</span></div>
+        <div class="pro-foot"><div class="pro-st">★★★★★ 4.8 · 64 reviews</div><div class="pro-rt">$310/hr</div></div>
+      </div>
+      <div class="pro" data-tags="strategy licensing portfolio" onclick="M('hire-pro','Anita Kapoor')">
+        <div class="pro-top"><div class="pro-av" style="background:#555">AK</div><div><div class="pro-nm">Anita Kapoor</div><div class="pro-sp">IP Strategist · Global</div></div><span class="p pg" style="margin-left:auto">Open</span></div>
+        <div class="pro-tags"><span class="ptag">Strategy</span><span class="ptag">Licensing</span></div>
+        <div class="pro-foot"><div class="pro-st">★★★★★ 4.9 · 112 reviews</div><div class="pro-rt">$390/hr</div></div>
+      </div>
+      <div class="pro" data-tags="copyright digital" onclick="M('hire-pro','David Lin')">
+        <div class="pro-top"><div class="pro-av" style="background:#2a2a2a">DL</div><div><div class="pro-nm">David Lin</div><div class="pro-sp">Copyright Law</div></div><span class="p pa" style="margin-left:auto">Busy 2d</span></div>
+        <div class="pro-tags"><span class="ptag">Copyrights</span><span class="ptag">Digital IP</span></div>
+        <div class="pro-foot"><div class="pro-st">★★★★½ 4.7 · 43 reviews</div><div class="pro-rt">$280/hr</div></div>
+      </div>
+      <div class="pro" data-tags="patent hardware robotics" onclick="M('hire-pro','Yuki Mori')">
+        <div class="pro-top"><div class="pro-av" style="background:#444">YM</div><div><div class="pro-nm">Yuki Mori</div><div class="pro-sp">Patent Agent · JP/US</div></div><span class="p pg" style="margin-left:auto">Open</span></div>
+        <div class="pro-tags"><span class="ptag">Hardware IP</span><span class="ptag">Robotics</span></div>
+        <div class="pro-foot"><div class="pro-st">★★★★★ 5.0 · 28 reviews</div><div class="pro-rt">$460/hr</div></div>
+      </div>
+      <div class="pro" data-tags="trademark copyright strategy" onclick="M('hire-pro','Priya Nair')">
+        <div class="pro-top"><div class="pro-av" style="background:#1a1a2e">PN</div><div><div class="pro-nm">Priya Nair</div><div class="pro-sp">IP Counsel · India/US</div></div><span class="p pg" style="margin-left:auto">Open</span></div>
+        <div class="pro-tags"><span class="ptag">SaaS IP</span><span class="ptag">Trade Secrets</span></div>
+        <div class="pro-foot"><div class="pro-st">★★★★★ 4.8 · 31 reviews</div><div class="pro-rt">$260/hr</div></div>
+      </div>
+    </div>
+    <div id="no-results" style="display:none;text-align:center;padding:32px;color:var(--3);font-size:12.5px">No professionals match your search.</div>
+  </div>
+</div>
+
+<!-- VAULT -->
+
+<div class="view" id="v-vault">
+  <div class="vault-wrap">
+    <div class="ph">
+      <div><div class="pt">Idea Vault</div><div class="ps" id="vault-sub">Blockchain-anchored · <span id="idea-count">4</span> ideas secured</div></div>
+      <button class="btn bs bsm" onclick="M('new-idea')">+ Capture</button>
+    </div>
+    <div class="card">
+      <div class="ch"><span class="ct">Your ideas</span><span class="p pg" id="vault-badge">Verified</span></div>
+      <div id="idea-list">
+        <div class="idea-row" data-id="1">
+          <div class="idea-icon">🔒</div>
+          <div style="flex:1;min-width:0"><div class="idea-nm">Quantum UI Interaction Model</div><div class="hash-tag">0x7c3f…a91e · Feb 12 2025</div></div>
+          <span class="p pn">Solo</span><span class="p pg">Protected</span>
+          <span class="idea-del" onclick="deleteIdea(this,event)" title="Remove">✕</span>
+        </div>
+        <div class="idea-row" data-id="2">
+          <div class="idea-icon">🔵</div>
+          <div style="flex:1;min-width:0"><div class="idea-nm">Adaptive Haptic Feedback for XR</div><div class="hash-tag">0xa3d1…b55c · Jan 28 2025</div></div>
+          <span class="p pb">3 collabs</span><span class="p pb">Developing</span>
+          <span class="idea-del" onclick="deleteIdea(this,event)" title="Remove">✕</span>
+        </div>
+        <div class="idea-row" data-id="3">
+          <div class="idea-icon">🟡</div>
+          <div style="flex:1;min-width:0"><div class="idea-nm">Biometric IP Ownership Verification</div><div class="hash-tag">0x9e2b…d44f · Jan 15 2025</div></div>
+          <span class="p pn">Solo</span><span class="p pa">Filing soon</span>
+          <span class="idea-del" onclick="deleteIdea(this,event)" title="Remove">✕</span>
+        </div>
+        <div class="idea-row" data-id="4" style="opacity:.5">
+          <div class="idea-icon">⬡</div>
+          <div style="flex:1;min-width:0"><div class="idea-nm">Neural Search Interface</div><div class="hash-tag">Encrypted · NDA restricted</div></div>
+          <span class="p pn">Private</span><span class="p pn">Draft</span>
+          <span class="idea-del" onclick="deleteIdea(this,event)" title="Remove">✕</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLS -->
+
+<div class="view" id="v-tools">
+  <div class="tools-wrap">
+    <div class="ph">
+      <div><div class="pt">AI Tools</div><div class="ps">Accelerate your IP workflows</div></div>
+      <span class="p pn">Claude-powered</span>
+    </div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="ch"><span class="ct">Tools</span></div>
+      <div class="trow" onclick="M('ai-patent')"><div class="t-ic">⬡</div><div><div class="t-nm">Patent claim drafter</div><div class="t-ds">Generate claims from disclosure</div></div><span class="t-bk">New</span></div>
+      <div class="trow" onclick="M('ai-search')"><div class="t-ic">⊕</div><div><div class="t-nm">Prior art search</div><div class="t-ds">USPTO, EPO, WIPO databases</div></div><span class="t-arr">›</span></div>
+      <div class="trow" onclick="toast('Trademark clearance coming soon','⏳')"><div class="t-ic">™</div><div><div class="t-nm">Trademark clearance</div><div class="t-ds">Screen across 100+ jurisdictions</div></div><span class="t-arr">›</span></div>
+      <div class="trow" onclick="toast('Spec writer coming soon','⏳')"><div class="t-ic">◫</div><div><div class="t-nm">Specification writer</div><div class="t-ds">Auto-generate patent specs</div></div><span class="t-arr">›</span></div>
+      <div class="trow" onclick="toast('Office action responder in beta','🧪')"><div class="t-ic">⚖</div><div><div class="t-nm">Office action responder</div><div class="t-ds">Draft USPTO / EPO responses</div></div><span class="t-bk" style="background:var(--3)">Beta</span></div>
+    </div>
+    <div class="card" id="draft-card">
+      <div class="ch">
+        <span class="ct">Active draft · Neural Mesh Compression</span>
+        <button class="btn bo bsm" onclick="regenerateDraft()" id="regen-btn">↻ Regenerate</button>
+      </div>
+      <div class="dbox" id="draft-box">
+        <div class="dbox-l">Claim 1 — independent</div>
+        <div class="dbox-t" id="draft-text"><b>Claim 1.</b> A system for compressing neural network weights comprising: a sparse encoding module configured to identify and encode non-zero weight values; a hierarchical compression layer operable to reduce dimensionality while preserving inference accuracy…</div>
+        <div class="dbox-a">
+          <button class="btn bo bsm" onclick="toast('Refining claim scope…','✦')">Refine</button>
+          <button class="btn bo bsm" onclick="toast('Expanding dependent claims…','✦')">Expand</button>
+          <button class="btn bs bsm" onclick="toast('Draft saved to portfolio','✅')">Save draft →</button>
+        </div>
+      </div>
+      <div style="padding:0 16px 14px">
+        <div style="font-size:9px;font-family:var(--m);color:var(--3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Prior art risk score</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:11.5px;color:var(--2);font-weight:300">Novelty risk</span><span class="p pg" id="risk-label">Low · 12%</span></div>
+        <div class="risk-bar"><div class="risk-fill" id="risk-fill" style="width:0;background:var(--g)"></div></div>
+        <div style="font-size:10px;color:var(--3);margin-top:4px">3 close references · 0 blocking patents</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /views -->
+
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- BOTTOM NAV (mobile) -->
+
+<div class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bnav-item on" id="bn-home" onclick="go('home',null,'bn-home')">
+      <span class="bnav-ic">⊞</span>
+      <span class="bnav-lb">Home</span>
+    </button>
+    <button class="bnav-item" id="bn-portfolio" onclick="go('portfolio',null,'bn-portfolio')">
+      <span class="bnav-ic">◫</span>
+      <span class="bnav-lb">Portfolio</span>
+      <span class="bnav-badge" id="bn-badge">2</span>
+    </button>
+    <button class="bnav-item" id="bn-marketplace" onclick="go('marketplace',null,'bn-marketplace')">
+      <span class="bnav-ic">◈</span>
+      <span class="bnav-lb">Market</span>
+    </button>
+    <button class="bnav-item" id="bn-vault" onclick="go('vault',null,'bn-vault')">
+      <span class="bnav-ic">⬡</span>
+      <span class="bnav-lb">Vault</span>
+    </button>
+    <button class="bnav-item" id="bn-tools" onclick="go('tools',null,'bn-tools')">
+      <span class="bnav-ic">✦</span>
+      <span class="bnav-lb">AI Tools</span>
+      <span class="bnav-dot"></span>
+    </button>
+  </div>
+</div>
+
+<!-- FAB -->
+
+<button class="fab" onclick="M('new-idea')" title="Capture idea">+</button>
+
+<!-- MODAL -->
+
+<div class="mbg" id="mbg" onclick="closeM(event)">
+  <div class="mbox">
+    <div class="mt"><div><div class="mt-ti" id="mti"></div><div class="mt-su" id="msu"></div></div><button class="mx" onclick="closeM()">✕</button></div>
+    <div class="mb" id="mbd"></div>
+    <div class="mf" id="mft"></div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──────────────────────────────────────────
+let state = {
+  filings: 24, pending: 7, protected: 18, ideas: 4,
+  activeFilter: 'all', searchQuery: '',
+  currentTab: 'home', alertCount: 2
+};
+
+// ── TAB NAVIGATION ─────────────────────────────────
+let prevTab = 'home';
+function go(id, el, bnId) {
+  if (id === state.currentTab) return;
+  const prev = document.getElementById('v-' + state.currentTab);
+  const next = document.getElementById('v-' + id);
+  prev.classList.remove('on');
+  next.style.cssText = 'opacity:0;transform:translateY(10px)';
+  next.classList.add('on');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    next.style.cssText = '';
+  }));
+  // Desktop tabs
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  (el || document.getElementById('t-' + id))?.classList.add('on');
+  // Bottom nav
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('on'));
+  (bnId ? document.getElementById(bnId) : document.getElementById('bn-' + id))?.classList.add('on');
+  state.currentTab = id;
+  if (id === 'portfolio') animateBars();
+  if (id === 'tools') setTimeout(() => { document.getElementById('risk-fill').style.width = '12%'; }, 300);
+}
+
+// ── ANIMATE BARS ───────────────────────────────────
+function animateBars() {
+  setTimeout(() => {
+    document.querySelectorAll('[data-w]').forEach(el => {
+      el.style.width = el.dataset.w + '%';
+    });
+  }, 150);
+}
+
+// ── FILING EXPAND/COLLAPSE ─────────────────────────
+let openFiling = null;
+function expandFiling(row, title, meta, detail) {
+  const rows = document.querySelectorAll('#filing-list .row');
+  const details = document.querySelectorAll('#filing-list .filing-detail');
+  const idx = Array.from(rows).indexOf(row);
+  const detailEl = details[idx];
+  if (openFiling === idx) {
+    detailEl.classList.remove('open');
+    openFiling = null;
+    return;
+  }
+  details.forEach(d => d.classList.remove('open'));
+  detailEl.innerHTML = `<div class="filing-detail-content"><span style="font-size:10px;color:var(--3);font-family:var(--m);text-transform:uppercase;letter-spacing:.7px">${meta}</span><br/>${detail}</div>`;
+  detailEl.classList.add('open');
+  openFiling = idx;
+}
+
+// ── STATUS CYCLE ──────────────────────────────────
+const statusCycle = {
+  'Active': {next:'Granted', cls:'pg'},
+  'Granted': {next:'Expired', cls:'pn'},
+  'Expired': {next:'Active', cls:'pg'},
+  'Pending': {next:'Active', cls:'pg'},
+  'Review':  {next:'Pending', cls:'pa'},
+  'Draft':   {next:'Pending', cls:'pa'},
+};
+function cycleStatus(el) {
+  const cur = el.textContent.trim();
+  if (!statusCycle[cur]) return;
+  const {next, cls} = statusCycle[cur];
+  el.textContent = next;
+  el.className = `p ${cls} status-cycle`;
+  toast(`Status updated to ${next}`, '✓');
+}
+
+// ── MARKETPLACE FILTER ─────────────────────────────
+function setFilter(tag, btn) {
+  state.activeFilter = tag;
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  filterPros();
+}
+function filterPros() {
+  const q = document.getElementById('pro-search').value.toLowerCase();
+  state.searchQuery = q;
+  document.getElementById('search-clear').style.display = q ? 'inline' : 'none';
+  const pros = document.querySelectorAll('.pro[data-tags]');
+  let visible = 0;
+  pros.forEach(p => {
+    const tags = p.dataset.tags;
+    const text = p.innerText.toLowerCase();
+    const matchFilter = state.activeFilter === 'all' || tags.includes(state.activeFilter);
+    const matchSearch = !q || text.includes(q) || tags.includes(q);
+    const show = matchFilter && matchSearch;
+    p.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  document.getElementById('no-results').style.display = visible ? 'none' : 'block';
+}
+function clearSearch() {
+  document.getElementById('pro-search').value = '';
+  state.searchQuery = '';
+  filterPros();
+}
+
+// ── VAULT: DELETE IDEA ─────────────────────────────
+function deleteIdea(btn, e) {
+  e.stopPropagation();
+  const row = btn.closest('.idea-row');
+  row.style.transition = 'opacity .2s,transform .2s,max-height .3s,padding .3s';
+  row.style.opacity = '0';
+  row.style.transform = 'translateX(12px)';
+  setTimeout(() => {
+    row.style.maxHeight = '0';
+    row.style.padding = '0';
+    row.style.margin = '0';
+    row.style.border = 'none';
+    setTimeout(() => {
+      row.remove();
+      state.ideas--;
+      document.getElementById('idea-count').textContent = state.ideas;
+      updateStats();
+      toast('Idea removed from vault', '🗑');
+    }, 300);
+  }, 200);
+}
+
+// ── VAULT: ADD IDEA ────────────────────────────────
+function addIdea(title) {
+  const list = document.getElementById('idea-list');
+  const hash = '0x' + Math.random().toString(16).slice(2,6) + '…' + Math.random().toString(16).slice(2,6);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+  const row = document.createElement('div');
+  row.className = 'idea-row new-item';
+  row.innerHTML = `
+    <div class="idea-icon">🔒</div>
+    <div style="flex:1;min-width:0"><div class="idea-nm">${title}</div><div class="hash-tag">${hash} · ${dateStr}</div></div>
+    <span class="p pn">Solo</span><span class="p pg">Protected</span>
+    <span class="idea-del" onclick="deleteIdea(this,event)" title="Remove">✕</span>`;
+  list.insertBefore(row, list.firstChild);
+  state.ideas++;
+  document.getElementById('idea-count').textContent = state.ideas;
+  updateStats();
+  addActivity(`Idea timestamped: <b>${title}</b>`);
+  toast('Idea secured to vault 🔒', '✓');
+}
+
+// ── ACTIVITY FEED ──────────────────────────────────
+function addActivity(html) {
+  const feed = document.getElementById('activity-feed');
+  const row = document.createElement('div');
+  row.className = 'arow';
+  row.style.animation = 'slideIn .3s ease both';
+  row.innerHTML = `<div class="a-dot" style="background:var(--g)"></div><div class="a-t">${html}</div><div class="a-ts">just now</div>`;
+  feed.insertBefore(row, feed.firstChild);
+  if (feed.children.length > 6) feed.lastChild.remove();
+}
+
+// ── AI DRAFT REGENERATE ────────────────────────────
+const drafts = [
+  `<b>Claim 1.</b> A system for compressing neural network weights comprising: a sparse encoding module configured to identify and encode non-zero weight values; a hierarchical compression layer operable to reduce dimensionality while preserving inference accuracy…`,
+  `<b>Claim 1.</b> A method for neural network optimization comprising: receiving a weight tensor having a plurality of values; applying entropy-based pruning to identify statistically insignificant parameters; encoding the pruned tensor using adaptive codebooks…`,
+  `<b>Claim 1.</b> A computing apparatus for compressing machine learning model parameters, the apparatus comprising: at least one processor configured to execute instructions to: identify sparse regions within a neural network weight matrix; apply hierarchical quantization…`,
+];
+let draftIdx = 0;
+function regenerateDraft() {
+  const btn = document.getElementById('regen-btn');
+  const box = document.getElementById('draft-text');
+  btn.textContent = '↻ Generating…';
+  btn.disabled = true;
+  box.innerHTML = '';
+  const words = '…'.split('');
+  let i = 0;
+  const cursor = document.createElement('span');
+  cursor.className = 'typing-cursor';
+  box.appendChild(cursor);
+  setTimeout(() => {
+    cursor.remove();
+    draftIdx = (draftIdx + 1) % drafts.length;
+    typeText(box, drafts[draftIdx], () => {
+      btn.textContent = '↻ Regenerate';
+      btn.disabled = false;
+      toast('New claim variant generated', '✦');
+    });
+  }, 600);
+}
+function typeText(el, html, cb) {
+  const stripped = html.replace(/<[^>]+>/g, '');
+  const full = html;
+  el.innerHTML = '';
+  let raw = '';
+  let ci = 0;
+  const interval = setInterval(() => {
+    if (ci >= stripped.length) {
+      clearInterval(interval);
+      el.innerHTML = full;
+      if (cb) cb();
+      return;
+    }
+    raw += stripped[ci++];
+    el.innerHTML = raw + '<span class="typing-cursor"></span>';
+  }, 14);
+}
+
+// ── UPDATE STATS ───────────────────────────────────
+function updateStats() {
+  animateNum('stat-protected', state.protected);
+  animateNum('stat-filings', state.filings);
+  document.getElementById('stat-protected-sub').textContent = `${state.ideas} ideas`;
+}
+function animateNum(id, target) {
+  const el = document.getElementById(id);
+  const cur = parseInt(el.textContent) || 0;
+  if (cur === target) return;
+  const step = target > cur ? 1 : -1;
+  let v = cur;
+  const t = setInterval(() => {
+    v += step;
+    el.textContent = v;
+    el.classList.add('count-anim');
+    if (v === target) clearInterval(t);
+  }, 80);
+}
+
+// ── TOASTS ─────────────────────────────────────────
+function toast(msg, icon='✓') {
+  const wrap = document.getElementById('toast-wrap');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span class="toast-icon">${icon}</span>${msg}`;
+  wrap.appendChild(t);
+  setTimeout(() => {
+    t.classList.add('out');
+    setTimeout(() => t.remove(), 250);
+  }, 2400);
+}
+
+// ── MODALS ─────────────────────────────────────────
+const MD = {
+  'new-filing': {
+    t:'New filing', s:'Patent, trademark, copyright, or design.',
+    b: `<div class="fi"><label>Type</label><select><option>Patent</option><option>Trademark</option><option>Copyright</option><option>Design patent</option></select></div>
+        <div class="fi"><label>Title</label><input id="nf-title" placeholder="e.g. SmartSync Navigation System"/></div>
+        <div class="fi"><label>Jurisdiction</label><select><option>United States (USPTO)</option><option>European Union (EPO)</option><option>International (PCT)</option></select></div>`,
+    ok: () => {
+      const t = document.getElementById('nf-title').value.trim();
+      if (!t) { toast('Please enter a title','⚠'); return false; }
+      state.filings++;
+      state.pending++;
+      animateNum('stat-filings', state.filings);
+      animateNum('stat-pending', state.pending);
+      addActivity(`New filing created: <b>${t}</b>`);
+      toast(`Filing "${t}" created`, '✅');
+      return true;
+    }
+  },
+  'new-idea': {
+    t:'Capture idea', s:'Cryptographically timestamped and secured.',
+    b: `<div class="fi"><label>Title</label><input id="ni-title" placeholder="Name your idea" oninput="updateCharCount(this,'ni-count',60)"/><div class="char-count" id="ni-count">0 / 60</div></div>
+        <div class="fi"><label>Description</label><textarea id="ni-desc" placeholder="Describe in detail…" oninput="updateCharCount(this,'ni-desc-count',280)"></textarea><div class="char-count" id="ni-desc-count">0 / 280</div></div>
+
+```
+    <div class="fi"><label>Visibility</label><select><option>Private</option><option>Shared with collaborators</option></select></div>`,
+ok: () => {
+  const t = document.getElementById('ni-title').value.trim();
+  if (!t) { toast('Please enter a title','⚠'); return false; }
+  addIdea(t);
+  if (state.currentTab !== 'vault') go('vault');
+  return true;
+}
+```
+
+},
+‘hire-pro’: {
+t:‘Hire professional’, s:‘Send a brief — quote within 24 hours.’,
+b: `<div class="fi"><label>Professional</label><input id="hp-name" readonly style="background:var(--w);cursor:default"/></div> <div class="fi"><label>Project type</label><select><option>Patent drafting</option><option>Trademark application</option><option>Copyright registration</option><option>IP strategy</option></select></div> <div class="fi"><label>Brief</label><textarea placeholder="What do you need?"></textarea></div> <div class="fi"><label>Budget</label><select><option>Under $1,000</option><option>$1,000–$5,000</option><option>$5,000–$15,000</option><option>$15,000+</option></select></div>`,
+ok: () => { toast(‘Brief sent! Expect a response within 24h’, ‘📩’); return true; }
+},
+‘patent’: {
+t:‘File a patent’, s:‘Utility, design, or provisional.’,
+b: `<div class="fi"><label>Type</label><select><option>Utility patent</option><option>Provisional patent</option><option>Design patent</option><option>PCT (international)</option></select></div> <div class="fi"><label>Title</label><input id="pat-title" placeholder="Technical title"/></div> <div class="fi"><label>Inventors</label><input placeholder="Full legal names"/></div>`,
+ok: () => {
+const t = document.getElementById(‘pat-title’).value.trim() || ‘Untitled Patent’;
+state.filings++; state.pending++;
+animateNum(‘stat-filings’, state.filings);
+addActivity(`Patent filing initiated: <b>${t}</b>`);
+toast(`Patent "${t}" filing started`, ‘⬡’);
+return true;
+}
+},
+‘trademark’: {
+t:‘Register trademark’, s:‘Brand name, logo, or slogan.’,
+b: `<div class="fi"><label>Mark type</label><select><option>Word mark</option><option>Logo / design mark</option><option>Slogan</option></select></div> <div class="fi"><label>Mark</label><input id="tm-mark" placeholder="Text or design description"/></div> <div class="fi"><label>Class</label><select><option>IC 42 – Technology</option><option>IC 9 – Software</option><option>IC 35 – Business</option></select></div>`,
+ok: () => {
+const m = document.getElementById(‘tm-mark’).value.trim() || ‘New Mark’;
+toast(`Trademark "${m}" clearance started`, ‘™’); return true;
+}
+},
+‘ai-patent’: {
+t:‘Patent claim drafter’, s:‘AI generates initial claims from your disclosure.’,
+b: `<div class="fi"><label>Technical field</label><input id="aip-field" placeholder="e.g. Machine learning"/></div> <div class="fi"><label>Invention summary</label><textarea placeholder="What does it do and what makes it unique?"></textarea></div>`,
+ok: () => {
+toast(‘Generating patent claims…’, ‘✦’);
+setTimeout(() => { go(‘tools’); toast(‘Draft ready in AI Tools’, ‘✅’); }, 1200);
+return true;
+}
+},
+‘ai-search’: {
+t:‘Prior art search’, s:‘Search global patent databases.’,
+b: `<div class="fi"><label>Query</label><textarea placeholder="Describe your invention…"></textarea></div> <div class="fi"><label>Scope</label><select><option>US (USPTO)</option><option>Global (EPO, WIPO)</option><option>Literature + patents</option></select></div>`,
+ok: () => { toast(‘Prior art search running…’, ‘⊕’); return true; }
+},
+‘deadlines’: {
+t:‘Urgent deadlines’, s:‘Action required on 2 items.’,
+b: `<div style="display:flex;flex-direction:column;gap:7px"> <div style="padding:10px 12px;background:var(--bg);border:1px solid var(--4);border-radius:var(--rad);display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="go('portfolio');closeM()"> <div><div style="font-size:12.5px;font-weight:400">SmartSync renewal</div><div style="font-size:10.5px;color:var(--3)">Patent · USPTO</div></div> <div style="display:flex;gap:6px;align-items:center"><span class="p pr">8 days</span><span style="color:var(--3);font-size:11px">›</span></div></div> <div style="padding:10px 12px;background:var(--bg);border:1px solid var(--4);border-radius:var(--rad);display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="go('portfolio');closeM()"> <div><div style="font-size:12.5px;font-weight:400">Manatune™ office action</div><div style="font-size:10.5px;color:var(--3)">Trademark · USPTO</div></div> <div style="display:flex;gap:6px;align-items:center"><span class="p pa">21 days</span><span style="color:var(--3);font-size:11px">›</span></div></div> </div>`,
+ok: () => { go(‘portfolio’); return true; }
+}
+};
+
+function M(id, arg) {
+const m = MD[id] || {t:‘Coming soon’,s:‘This feature is on the roadmap.’,b:’’,ok:()=>true};
+document.getElementById(‘mti’).textContent = m.t;
+document.getElementById(‘msu’).textContent = m.s;
+document.getElementById(‘mbd’).innerHTML = m.b;
+document.getElementById(‘mft’).innerHTML =
+`<button class="btn bo bsm" onclick="closeM()">Cancel</button> <button class="btn bs bsm" onclick="handleOk('${id}')">Confirm →</button>`;
+document.getElementById(‘mbg’).classList.add(‘on’);
+// Pre-fill name for hire-pro
+if (id === ‘hire-pro’ && arg) {
+setTimeout(() => { const el = document.getElementById(‘hp-name’); if(el) el.value = arg; }, 10);
+}
+// Focus first input
+setTimeout(() => {
+const first = document.querySelector(’#mbd input:not([readonly]), #mbd textarea’);
+if (first) first.focus();
+}, 80);
+}
+
+function handleOk(id) {
+const m = MD[id];
+if (!m || !m.ok) { closeM(); return; }
+const result = m.ok();
+if (result) closeM();
+}
+
+function closeM(e) {
+if (!e || e.target === document.getElementById(‘mbg’))
+document.getElementById(‘mbg’).classList.remove(‘on’);
+}
+
+// ── CHAR COUNT ─────────────────────────────────────
+function updateCharCount(el, countId, max) {
+const n = el.value.length;
+const counter = document.getElementById(countId);
+if (!counter) return;
+counter.textContent = `${n} / ${max}`;
+counter.style.color = n > max * .9 ? ‘var(–r)’ : ‘var(–3)’;
+}
+
+// ── KEYBOARD ───────────────────────────────────────
+document.addEventListener(‘keydown’, e => {
+if (e.key === ‘Escape’) document.getElementById(‘mbg’).classList.remove(‘on’);
+if (e.key === ‘n’ && !e.target.matches(‘input,textarea,select’) && (e.metaKey || e.ctrlKey)) {
+e.preventDefault(); M(‘new-idea’);
+}
+});
+</script>
+
+</body>
 </html>
